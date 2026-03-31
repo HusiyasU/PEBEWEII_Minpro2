@@ -16,11 +16,9 @@ require_once __DIR__ . '/../config/database.php';
 try {
     $pdo = getConnection();
 
-    // ── Filter by category (opsional dari query string) ──
     $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
     if ($category && $category !== 'All') {
-        // Prepared statement — aman dari SQL injection
         $stmt = $pdo->prepare(
             'SELECT * FROM certificates WHERE category = :cat ORDER BY sort_order ASC'
         );
@@ -31,12 +29,10 @@ try {
 
     $certificates = $stmt->fetchAll();
 
-    // ── Ambil semua kategori unik untuk filter tab ──
     $cats = $pdo
         ->query('SELECT DISTINCT category FROM certificates ORDER BY category ASC')
         ->fetchAll(PDO::FETCH_COLUMN);
 
-    // Tambahkan "All" di depan
     array_unshift($cats, 'All');
 
     echo json_encode([
