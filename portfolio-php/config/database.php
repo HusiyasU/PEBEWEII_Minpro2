@@ -7,11 +7,11 @@
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'portfolio_db');
-define('DB_USER', 'root');       // default Laragon
-define('DB_PASS', '');           // default Laragon kosong
+define('DB_USER', 'root');       
+define('DB_PASS', '');          
 
 function getConnection(): PDO {
-    static $pdo = null;          // singleton — buat koneksi 1x saja
+    static $pdo = null;       
 
     if ($pdo === null) {
         try {
@@ -23,7 +23,6 @@ function getConnection(): PDO {
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
         } catch (PDOException $e) {
-            // Kirim error sebagai JSON supaya Vue bisa handle
             http_response_code(500);
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
